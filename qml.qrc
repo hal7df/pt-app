@@ -2,5 +2,20 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Card.qml</file>
+        <file>RippleTouchArea.qml</file>
+        <file>MainPage.qml</file>
+        <file>Toolbar.qml</file>
+        <file>IconWidget.qml</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file alias="PaulsTutorials.png">img/PaulsTutorials.png</file>
+    </qresource>
+    <qresource prefix="/icon">
+        <file alias="ic_menu-18dp.png">icon/ic_menu-18dp.png</file>
+        <file alias="ic_menu-24dp.png">icon/ic_menu-24dp.png</file>
+        <file alias="ic_menu-36dp.png">icon/ic_menu-36dp.png</file>
+        <file alias="ic_menu-48dp.png">icon/ic_menu-48dp.png</file>
+        <file alias="ic_menu-72dp.png">icon/ic_menu-72dp.png</file>
+        <file alias="ic_menu-96dp.png">icon/ic_menu-96dp.png</file>
     </qresource>
 </RCC>

@@ -3,20 +3,23 @@ import QtQuick.Window 2.2
 
 Window {
     id: root
+
+    width: 338
+    height: 600
+
     visible: true
     color: "#cecece"
 
-    Card {
-        id: card
+    Toolbar {
+        id: toolbar
 
-        height: parent.height/4
+        title: "Paul's Tutorials"
+        subtitle: "Learn Programming"
+    }
 
-        anchors.fill: parent
+    MainPage {
+        id: mainPage
 
-        Text {
-            text: "Hello World! I'm a Card!"
-
-            anchors.centerIn: parent
-        }
+        anchors.top: toolbar.bottom
     }
 }
