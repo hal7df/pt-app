@@ -9,7 +9,6 @@ Item {
 
     readonly property real maxWidth: fillParent ? (width > height ? width*3 : height*3) : width
     readonly property real endX: fillParent ? (-width/2) : 0
-    readonly property real endY: fillParent ? ripple.y : 0
 
     signal clicked
     signal pressAndHold
@@ -39,7 +38,7 @@ Item {
             NumberAnimation { target: ripple; property: "opacity"; to: touchArea.opacity; duration: 100 }
             NumberAnimation { target: ripple; property: "width"; to: touchArea.maxWidth; duration: 1000 }
             NumberAnimation { target: ripple; property: "x"; to: touchArea.endX; duration: 1000 }
-            NumberAnimation { target: ripple; property: "y"; to: touchArea.endY; duration: 1000 }
+            NumberAnimation { target: ripple; property: "y"; to: 0; duration: 1000 }
         }
 
         SequentialAnimation {
@@ -49,7 +48,30 @@ Item {
                 NumberAnimation { target: ripple; property: "opacity"; to: 0.0; duration: 200; easing.type: Easing.InSine }
                 NumberAnimation { target: ripple; property: "width"; to: touchArea.maxWidth; duration: 200 }
                 NumberAnimation { target: ripple; property: "x"; to: touchArea.endX; duration: 200 }
-                NumberAnimation { target: ripple; property: "y"; to: touchArea.endY; duration: 200 }
+                NumberAnimation { target: ripple; property: "y"; to: 0; duration: 200 }
+            }
+
+            ScriptAction {
+                script: {
+                    ripple.width = 0;
+                }
+            }
+        }
+
+        ParallelAnimation {
+            id: rippleFillAnimation
+            NumberAnimation { target: ripple; property: "opacity"; to: touchArea.opacity; duration: 100 }
+            NumberAnimation { target: ripple; property: "width"; to: touchArea.maxWidth; duration: 1000 }
+            NumberAnimation { target: ripple; property: "x"; to: touchArea.endX; duration: 1000 }
+        }
+
+        SequentialAnimation {
+            id: fastFillAnimation
+
+            ParallelAnimation {
+                NumberAnimation { target: ripple; property: "opacity"; to: 0.0; duration: 200; easing.type: Easing.InSine }
+                NumberAnimation { target: ripple; property: "width"; to: touchArea.maxWidth; duration: 200 }
+                NumberAnimation { target: ripple; property: "x"; to: touchArea.endX; duration: 200 }
             }
 
             ScriptAction {
@@ -76,7 +98,10 @@ Item {
             ripple.centerX = mouse.x;
             ripple.centerY = mouse.y;
 
-            rippleAnimation.start();
+            if (parent.fillParent)
+                rippleFillAnimation.start();
+            else
+                rippleAnimation.start();
 
             mouse.accepted = true;
         }
@@ -86,6 +111,11 @@ Item {
             {
                 rippleAnimation.stop();
                 fastAnimation.start();
+            }
+            if (rippleFillAnimation.running)
+            {
+                rippleFillAnimation.stop();
+                fastFillAnimation.start();
             }
             else
             {

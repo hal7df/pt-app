@@ -10,11 +10,12 @@ Window {
     visible: true
     color: "#cecece"
 
+    title: "Paul's Tutorials"
+
     Toolbar {
         id: toolbar
 
         title: "Paul's Tutorials"
-        subtitle: "Learn Programming"
     }
 
     MainPage {
