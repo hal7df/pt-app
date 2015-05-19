@@ -1,17 +1,14 @@
 import QtQuick 2.4
 
-Item {
+Activity {
     id: page
-
-    anchors {
-        bottom: parent.bottom
-        left: parent.left
-        right: parent.right
-    }
 
     signal launchCpp
     signal launchWpi
     signal launchRef
+
+    title: "Paul's Tutorials"
+    openDefault: true
 
     Image {
         anchors {
@@ -50,9 +47,12 @@ Item {
         }
 
         cellWidth: parent.width > parent.height ? width/2 : width
-        cellHeight: parent.width > parent.height ? parent.width/7 : parent.height/7
+        cellHeight: parent.width > parent.height ? parent.width/7 : parent.height/6
+
+        clip: true
 
         interactive: height < count*cellHeight
+        boundsBehavior: Flickable.StopAtBounds
 
         model: optionModel
 

@@ -15,7 +15,7 @@ Rectangle {
         left: parent.left
     }
 
-    height: parent.height > parent.width ? parent.height/10 : parent.height/5
+    height: parent.height > parent.width ? parent.height/10 : parent.height/7
 
     color: "#333333"
     clip: true

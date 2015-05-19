@@ -4,23 +4,17 @@ import QtQuick.Window 2.2
 Window {
     id: root
 
+    property Activity activeActivity: mainPage
+
     width: 338
     height: 600
 
     visible: true
     color: "#cecece"
 
-    title: "Paul's Tutorials"
-
-    Toolbar {
-        id: toolbar
-
-        title: "Paul's Tutorials"
-    }
+    title: activeActivity.title
 
     MainPage {
         id: mainPage
-
-        anchors.top: toolbar.bottom
     }
 }
