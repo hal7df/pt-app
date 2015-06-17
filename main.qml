@@ -16,5 +16,11 @@ Window {
 
     MainPage {
         id: mainPage
+
+        drawer: drawer
+    }
+
+    Drawer {
+        id: drawer
     }
 }
