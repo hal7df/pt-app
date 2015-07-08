@@ -8,6 +8,7 @@
         <file>IconWidget.qml</file>
         <file>Activity.qml</file>
         <file>Drawer.qml</file>
+        <file>ProgressBar.qml</file>
     </qresource>
     <qresource prefix="/img">
         <file alias="PaulsTutorials.png">img/PaulsTutorials.png</file>

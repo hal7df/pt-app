@@ -19,21 +19,10 @@ Activity {
 
         source: "qrc:/img/PaulsTutorials.png"
         smooth: true
+        fillMode: Image.PreserveAspectFit
+
         height: width
         width: parent.height > parent.width ? parent.width/5 : parent.height/5
-    }
-
-    Text {
-        anchors {
-            bottom: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
-            bottomMargin: parent.height/7
-        }
-
-        text: "Select an option below."
-
-        font.pixelSize: parent.height/30
-        scale: paintedWidth > parent.width ? parent.width/paintedWidth : 1
     }
 
     GridView {
@@ -44,6 +33,9 @@ Activity {
             right: parent.right
             left: parent.left
             bottom: parent.bottom
+            leftMargin: 0.025*parent.width
+            rightMargin: anchors.rightMargin
+            topMargin: -(parent.height/7)
         }
 
         cellWidth: parent.width > parent.height ? width/2 : width
@@ -119,6 +111,14 @@ Activity {
             }
 
         }
+    }
+
+    ProgressBar {
+        anchors.top: parent.top
+
+        progress: -1
+        active: true
+        width: parent.width
     }
 
     ListModel {

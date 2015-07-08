@@ -53,6 +53,7 @@ Item {
 
             fillParent: true
             opacity: 1.0
+            clip: true
 
             Component.onCompleted: {
                 clicked.connect(cardContain.clicked);

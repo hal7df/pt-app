@@ -23,9 +23,12 @@ Item {
     visible: openDefault
     focus: visible
 
-    Keys.onBackPressed: {
-        event.accepted = true;
-        exit();
+    Keys.onReleased: {
+        if (event.key == Qt.Key_Back)
+        {
+            event.accepted = true;
+            close();
+        }
     }
 
 
@@ -80,6 +83,8 @@ Item {
             exit.start();
         else
             Qt.quit();
+
+        console.log("Close function called.");
     }
 }
 

@@ -6,16 +6,20 @@ Item {
 
     property ListModel tree
     property bool open: false
+    property real drawerWidth: parent.height > parent.width ? 0.75*parent.width : 0.4*parent.width
+    property real baseWidth: drawerWidth + drawerHandle
+    property real addedWidth: (parent.width - baseWidth)*((x + drawerWidth)/drawerWidth)
+    property real drawerHandle: parent.height > parent.width ? 0.05*parent.width : 0.035*parent.width
 
     anchors {
         top: parent.top
         bottom: parent.bottom
     }
 
-    x: -(0.9*width)
+    x: -drawerWidth
     z: 100
 
-    width: parent.height > parent.width ? 0.8*parent.width : 0.4*parent.width
+    width: baseWidth + addedWidth
 
     focus: open
 
@@ -27,7 +31,7 @@ Item {
 
     SequentialAnimation {
         id: closeAnimate
-        PropertyAnimation { target: drawer; property: "x"; to: -(0.9*drawer.width); easing.type: Easing.OutQuad }
+        PropertyAnimation { target: drawer; property: "x"; to: -(drawer.drawerWidth); easing.type: Easing.OutQuad }
         ScriptAction { script: { drawer.open = false; } }
     }
 
@@ -37,8 +41,8 @@ Item {
         glowRadius: 0.1*parent.width
         color: "#000000"
 
-        visible: parent.x > -(0.9*parent.width)
-        opacity: (parent.x+(0.9*parent.width))/(0.9*parent.width)
+        visible: parent.x > -(parent.drawerWidth)
+        opacity: (parent.x+parent.drawerWidth)/(parent.drawerWidth)
     }
 
     Rectangle {
@@ -50,63 +54,107 @@ Item {
             bottom: parent.bottom
         }
 
-        width: 0.9*parent.width
+        width: parent.drawerWidth
         color: "#eeeeee"
         antialiasing: true
 
+        Item {
+            id: drawerHeader
 
-        onWidthChanged: console.log("Drawer width", width);
+            anchors {
+                top: parent.top
+                right: parent.right
+                left: parent.left
+            }
+
+            height: parent.height/5
+            clip: true
+
+            Rectangle {
+                anchors.fill: parent
+                anchors.rightMargin: -1
+
+                color: "#000000"
+            }
+
+            Image {
+                anchors {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                    verticalCenter: parent.bottom
+                }
+
+                source: "qrc:/img/PaulsTutorials.png"
+                smooth: true
+
+                fillMode: Image.PreserveAspectFit
+            }
+
+            Rectangle {
+                anchors {
+                    top: parent.verticalCenter
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#00000000" }
+                    GradientStop { position: 1.0; color: "#dd000000" }
+                }
+
+                Text {
+                    anchors {
+                        left: parent.left
+                        bottom: parent.bottom
+                        margins: parent.height/5
+                    }
+
+                    color: "#ffffff"
+
+                    text: "Paul's Tutorials"
+
+                    font.pixelSize: parent.height/2
+                }
+            }
+        }
     }
 
-    MultiPointTouchArea {
+    MouseArea {
         id: dragArea
 
         anchors.fill: parent
 
-        minimumTouchPoints: 1
-        maximumTouchPoints: 1
-
-        onTouchUpdated: {
-            console.log("Touch point differential",(touchPoints[0].x-touchPoints[0].startX));
-
-            if (touchPoints.length == 1 && (touchPoints[0].x-touchPoints[0].startX) <= 0.9*drawer.width)
-                drawer.x += (touchPoints[0].x-touchPoints[0].startX);
+        drag {
+            axis: Drag.XAxis
+            target: drawer
+            minimumX: -drawer.drawerWidth
+            maximumX: 0
+            filterChildren: true
         }
 
         onReleased: {
-            if (touchPoints.length == 1)
-            {
-                var point = touchPoints[0];
+            var threshold;
 
-                if (point.velocity.x > 50)
-                    openAnimate.start();
-                else if (point.velocity.x < -50)
-                    closeAnimate.start();
-                else {
-                    if (drawer.open)
-                    {
-                        if (-((point.x-point.startX)+drawer.x)/(0.9*drawer.width) > 0.5)
-                            openAnimate.start();
-                        else
-                            closeAnimate.start();
-                    }
-                    else
-                    {
-                        if (-((point.x-point.startX)+drawer.x)/(0.9*drawer.width) < 0.5)
-                            closeAnimate.start();
-                        else
-                            openAnimate.start();
-                    }
-                }
+            if (parent.open)
+                threshold = -(parent.drawerWidth/4);
+            else
+                threshold = -3*(parent.drawerWidth/4);
 
-                console.log("Released");
-            }
+            if (parent.x < threshold)
+                closeAnimate.start();
+            else
+                openAnimate.start();
         }
     }
 
     function toggle()
     {
-
+        if (open)
+            closeAnimate.start();
+        else
+            openAnimate.start();
     }
 }
 
